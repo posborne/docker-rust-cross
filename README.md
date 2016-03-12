@@ -14,7 +14,7 @@ authors to build and (for some architectures) run tests for
 architectures that they may not have set up on their own development
 machines.
 
-[rust-cross]: https://hub.docker.com/posborne/rust-cross
+[rust-cross]: https://hub.docker.com/r/posborne/rust-cross/
 
 License
 -------

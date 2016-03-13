@@ -32,13 +32,6 @@ install_multirust() {
     }
 }
 
-install_rustc_versions() {
-    for version in ${RUST_VERSIONS}; do
-        echo "INSTALL: version ${version}"
-        multirust update "${version}"
-    done
-}
-
 install_cross_std() {
     for version in ${RUST_VERSIONS}; do
         multirust override "${version}"
@@ -52,5 +45,4 @@ install_cross_std() {
 }
 
 install_multirust
-install_rustc_versions
 install_cross_std

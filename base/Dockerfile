@@ -5,7 +5,9 @@ WORKDIR /build
 
 RUN apt-get -y update && \
     apt-get install -y --force-yes --no-install-recommends \
-        curl file sudo g++ gcc libc6-dev git ca-certificates && \
+        curl file sudo g++ gcc libc6-dev git ca-certificates \
+        musl-tools \
+        && \
     apt-get clean
 
 # Install Rust Versions (x86_64/i686)

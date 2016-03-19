@@ -22,8 +22,6 @@ BUILD_DIR="."
 VERSION="$1"
 TARGET="$2"
 
-export RUST_TEST_THREADS=1
-
 #
 # Tell cargo what linker to use and whatever else is required
 #
@@ -64,16 +62,15 @@ cross_compile_tests() {
 find_binaries() {
   target_base_dir="${BUILD_DIR}/${TARGET}/debug"
 
-  # find [[test]] sections and print the first line and
-  # hack it to what we want from there.  Also "nix" for
-  # tests that are implicitly prsent
-  for test_base in $( awk '/\[\[test\]\]/{getline; print}' "${MANIFEST_PATH}" | \
-                          cut -d '='  -f2 | \
-                          tr -d '"' | \
-                          tr '-' '_' | \
-                          tr -d ' '; echo "nix" ); do
-    for path in ${target_base_dir}/${test_base}-* ; do
-      echo "${path} "
+  # find all test or lib as candidate files
+  for target in $(cargo read-manifest |
+                       jq -r '.targets[] | select(.kind | contains(["lib"]) or contains(["test"])) | .name' |
+                       tr '-' '_'); do
+    possible_bin_root="${target_base_dir}/${target}"
+    for possibility in $possible_bin_root*; do
+      if [ -x $possibility ] && [[ $possibility != *.d ]]; then
+          echo $possibility
+      fi
     done
   done
 }

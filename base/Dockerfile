@@ -10,11 +10,7 @@ RUN apt-get -y update && \
         && \
     apt-get clean
 
-# Install Rust Versions (x86_64/i686)
-#
-# Images inheriting from this one will also have /rust-cross/install_rust.sh
-# available for installing additional rust versions and std targets
+# Add install script and set the base RUST_VERSION to be used (but do
+# not actually install any rust in base)
 ADD install_rust.sh /rust-cross/
-ENV RUST_TARGETS="x86_64-unknown-linux-gnu i686-unknown-linux-gnu x86_64-unknown-linux-musl" \
-    RUST_VERSIONS="1.7.0"
-RUN bash /rust-cross/install_rust.sh
+ENV RUST_TARGETS="" RUST_VERSIONS="1.7.0"

@@ -6,7 +6,7 @@ WORKDIR /build
 RUN apt-get -y update && \
     apt-get install -y --force-yes --no-install-recommends \
         curl file sudo g++ gcc libc6-dev git ca-certificates \
-        musl-tools \
+        musl-tools jq \
         && \
     apt-get clean
 

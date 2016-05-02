@@ -1,0 +1,5 @@
+language: generic
+sudo: false
+notifications:
+  webhooks:
+    - http://rust-embedded-bot.herokuapp.com/travis

@@ -13,4 +13,4 @@ RUN apt-get -y update && \
 # Add install script and set the base RUST_VERSION to be used (but do
 # not actually install any rust in base)
 ADD install_rust.sh /rust-cross/
-ENV RUST_TARGETS="" RUST_VERSIONS="1.7.0"
+ENV RUST_TARGETS="" RUST_VERSIONS="{{ rust_version }}"

@@ -1,4 +1,4 @@
-FROM posborne/rust-cross:base
+FROM posborne/rust-cross-base:{{ rust_version }}
 
 # Setup PATH to allow running android tools.
 ENV PATH=$PATH:/android/ndk-arm/bin:\

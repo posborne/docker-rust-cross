@@ -1,4 +1,4 @@
-FROM posborne/rust-cross:base
+FROM posborne/rust-cross-base:{{ rust_version }}
 
 RUN apt-get -y update && \
     apt-get install -y --force-yes --no-install-recommends \

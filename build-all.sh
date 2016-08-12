@@ -18,14 +18,11 @@ VERSIONS=${VERSIONS:-"\
   1.8.0 \
   1.9.0 \
   1.10.0 \
-  beta \
-  stable \
-  nightly \
 "}
 
 build_image() {
-    local platform=$1
-    local rust_version=$2
+    local platform="$1"
+    local rust_version="$2"
     local build_dir="$TOPDIR/build/${platform}:${rust_version}"
 
     echo "Building posborne/rust-cross-${platform}:${rust_version} ..."
@@ -44,15 +41,11 @@ EOF
     docker build \
            -t "${BASE_NAME}${platform}:${rust_version}" \
            "${build_dir}"
-
-    echo "Done with posborne/rust-cross-${platform} ... Waiting 30s before continuing"
 }
 
 for platform in $PLATFORMS; do
     for version in $VERSIONS; do
         build_image ${platform} ${version}
+        echo "Done with posborne/rust-cross-${platform}:${version} ... Waiting 30s before continuing"
     done
 done
-
-build_image base 1.7.0
-build_image base 1.8.0

@@ -25,21 +25,32 @@ RUST_VERSIONS=${RUST_VERSIONS:-"\
     beta \
     nightly"}
 
+export PATH=$PATH:$HOME/.cargo/bin
+
 install_multirust() {
     # install multirust if not already installed (may be called multiple times)
-    command -v multirust >/dev/null 2>&1 || {
-        curl -sf https://raw.githubusercontent.com/brson/multirust/master/quick-install.sh | sh -s -- --yes
+    command -v rustup >/dev/null 2>&1 || {
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
     }
 }
 
 install_cross_std() {
     for version in ${RUST_VERSIONS}; do
-        multirust override "${version}"
+        rustup install "${version}"
         for target in ${RUST_TARGETS}; do
-            arc_basename="rust-std-${version}-${target}"
-            curl https://static.rust-lang.org/dist/${arc_basename}.tar.gz | tar xz
-            ${arc_basename}/install.sh --prefix=$(rustc --print sysroot)
-            rm -rf ${arc_basename}
+            if echo ${version} | grep '.*-[0-9]*-[0-9]*-[0-9]*' >/dev/null 2>&1; then
+                local parts=${version//-/ }
+                local filename="rust-std-${parts[1]}-${target}"
+                local dlpath="${parts[2]}-${parts[3]}-${parts[4]}/rust-std-${parts[1]}-${target}"
+                curl https://static.rust-lang.org/dist/${dlpath}.tar.gz | tar xz
+                ${filename}/install.sh --prefix=$(rustc --print sysroot)
+                rm -rf ${filename}
+            else
+                local arc_basename="rust-std-${version}-${target}"
+                curl https://static.rust-lang.org/dist/${arc_basename}.tar.gz | tar xz
+                ${arc_basename}/install.sh --prefix=$(rustc --print sysroot)
+                rm -rf ${arc_basename}
+            fi
         done
     done
 }
